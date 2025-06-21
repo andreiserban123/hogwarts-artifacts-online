@@ -9,5 +9,4 @@ public class HogwartsArtifactsOnlineApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HogwartsArtifactsOnlineApplication.class, args);
 	}
-
 }
