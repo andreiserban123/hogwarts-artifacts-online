@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ro.ase.ro.hogwartsartifactsonline.exceptions.ArtifactNotFoundException;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class ArtifactService {
@@ -16,5 +18,9 @@ public class ArtifactService {
 
     public Artifact findById(String artifactId) {
         return artifactRepository.findById(artifactId).orElseThrow(() -> new ArtifactNotFoundException(artifactId));
+    }
+
+    public List<Artifact> findAll() {
+        return artifactRepository.findAll();
     }
 }

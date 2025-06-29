@@ -29,4 +29,17 @@ public class ArtifactController {
                 artifactToArtifactDtoConverter.convert(artifact)
         );
     }
+
+    @GetMapping("/api/v1/artifacts")
+    public Result findAllArtifacts() {
+        var artifacts = artifactService.findAll();
+        var list = artifacts.stream().map(artifactToArtifactDtoConverter::convert).toList();
+        return new Result(
+                true,
+                StatusCode.SUCCESS,
+                "Find All Success",
+                list
+        );
+    }
+
 }

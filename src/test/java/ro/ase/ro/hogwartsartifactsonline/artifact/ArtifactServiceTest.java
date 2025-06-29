@@ -11,6 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ro.ase.ro.hogwartsartifactsonline.exceptions.ArtifactNotFoundException;
 import ro.ase.ro.hogwartsartifactsonline.wizard.Wizard;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +25,9 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class ArtifactServiceTest {
 
+
+    List<Artifact> artifacts = new ArrayList<>();
+
     @Mock
     ArtifactRepository artifactRepository;
 
@@ -31,6 +36,22 @@ class ArtifactServiceTest {
 
     @BeforeEach
     void setUp() {
+        Artifact a1 = new Artifact();
+        a1.setId("1250808601744904191");
+        a1.setName("Deluminator");
+        a1.setDescription("A Deluminator is a device invented by Albus Dumbledore that resembles a cigarette lighter. It is used to remove or absorb (as well as return) the light from any light source to provide cover to the user.");
+        a1.setImageUrl("https://hogwartsartifactsonline.blob.core.windows.net/artifact-image-container/deluminator.jpg");
+
+        Artifact a2 = new Artifact();
+        a2.setId("1250808601744904192");
+        a2.setName("Invisibility Cloak");
+        a2.setDescription("An invisibility cloak is used to make the wearer invisible.");
+        a2.setImageUrl("https://hogwartsartifactsonline.blob.core.windows.net/artifact-image-container/invisibility-cloak.jpg");
+
+
+        artifacts.add(a1);
+        artifacts.add(a2);
+
     }
 
     @AfterEach
@@ -79,5 +100,25 @@ class ArtifactServiceTest {
 
         assertThat(thrown).isInstanceOf(ArtifactNotFoundException.class)
                 .hasMessage("Could not find artifact with Id 123442132 :(");
+    }
+
+
+    @Test
+    void testFindAllSuccess() {
+//        Given
+        given(artifactRepository.findAll()).willReturn(artifacts);
+
+//        WHEN
+
+        var lista = artifactService.findAll();
+
+//        THen
+
+        assertThat(lista).isNotNull();
+        assertThat(lista).isNotEmpty();
+        assertThat(lista.size()).isEqualTo(artifacts.size());
+        assertThat(lista.get(0).getId()).isEqualTo(artifacts.get(0).getId());
+        assertThat(lista.get(0).getName()).isEqualTo(artifacts.get(0).getName());
+        verify(artifactRepository, times(1)).findAll();
     }
 }
